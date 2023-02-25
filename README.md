@@ -1,6 +1,7 @@
 # Gogs-Shell-Uploader
 Tool to automate code execution on the server running Gogs git service.
 
+![Alt text](./example.svg)
 <!--[![asciicast](https://asciinema.org/a/562896.svg)](https://asciinema.org/a/562896)-->
 
 ## How to use
