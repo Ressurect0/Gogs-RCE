@@ -1,4 +1,4 @@
-# Gogs-Shell-Uploader
+# Gogs Remote Code Execution
 Tool to automate code execution on the server running Gogs git service.  
 Inspired from: https://github.com/p0dalirius/CVE-2020-14144-GiTea-git-hooks-rce
 
