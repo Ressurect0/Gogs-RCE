@@ -10,7 +10,7 @@ Inspired from: https://github.com/p0dalirius/CVE-2020-14144-GiTea-git-hooks-rce
 <!--[![asciicast](https://asciinema.org/a/562896.svg)](https://asciinema.org/a/562896)-->
 
 ## Linux Dependencies
-This tool automates the execution of the git commands using Linux tools: git and [expect](https://linux.die.net/man/1/expect).
+This tool automates the execution of git commands using Linux tools: git and [expect](https://linux.die.net/man/1/expect)
 ```bash
 sudo apt install git
 sudo apt install expect
